@@ -1,0 +1,17 @@
+<ul class="data">
+</ul>
+
+
+<script>
+jQuery(document).ready(function($) {
+
+
+  function query_starling(){
+    var new_data = $('<li />').load("/new_message");
+    $("ul.data").append(new_data)
+  }
+
+  setInterval( query_starling, 1000 );
+
+});
+</script>
