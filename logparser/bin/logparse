@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+options = {
+  :dir_mode   => :normal,
+  :dir        => "/tmp",
+  :backtrace  => true
+}
+
+require "daemons"
+require File.expand_path("../../lib/log_parser.rb", __FILE__)
+
+combined_log_format = '%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %D'
+log_file_to_parse = "/var/log/apache2/test.access.log"
+
+$0 = "logparse"
+
+Daemons.run_proc(File.basename(__FILE__), options) do
+  alr = AccessLogReader.new(log_file_to_parse, combined_log_format )
+  loop do
+    alr.read
+  end
+end
